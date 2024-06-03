@@ -1,0 +1,42 @@
+Взять таблицу user и вывести в новом представлении всех пользователей с почтой gmail 
+а также в промежутке за весь 2016 год, в новом представлении показать имя пользователя,
+почту, и дату в формате д-м-г
+
+
+CREATE VIEW task AS
+SELECT `name`,`email`, DATE_FORMAT(`reg_date`, '%d-%m-%Y') AS formatted_date
+FROM `user`
+WHERE `email` LIKE '%gmail%' AND `reg_date` BETWEEN '2016-01-01' AND '2016-12-31'
+
+
+Взять таблицу user и вывести в новом представлении всех пользователей с почтой gmail 
+а также в промежутке за весь 2016 год, в новом представлении показать имя пользователя, 
+почту, и дату в формате д-м-г
+
+CREATE VIEW gmail__users_2016 AS
+SELECT name, email, DATE_FORMAT(reg_date, '%d-%m-%Y') AS format_date
+FROM user
+WHERE email LIKE ('%gmail%') AND YEAR(reg_date) = 2016
+
+
+
+
+CREATE VIEW filtered_good_view AS
+SELECT name, count, price
+FROM good
+WHERE name <> 'АЙС ТИ'
+  AND count < 100
+  AND price > 300;
+
+
+
+
+CREATE VIEW null_values_count AS
+SELECT 
+    COUNT(*) AS count_null_values
+FROM 
+    information_schema.columns
+WHERE 
+    table_schema = 'ivanshesto' 
+    AND table_name = 'good_category' 
+    AND is_nullable = 'YES';
