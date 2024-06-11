@@ -51,7 +51,6 @@ def test_login_invalid(browser):
     open_modal_button = browser.find_element(By.ID, 'openModalButton')
     open_modal_button.click()
 
-    # Ждем, пока попап откроется
     login_modal = WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.ID, 'loginModal')))
 
     # Авторизация с неправильным логином и паролем
