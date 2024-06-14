@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 
 @pytest.fixture
 def browser():
@@ -17,7 +18,7 @@ def test_go_to_offers_page(browser):
 
 # Основное меню
     WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "dropdown-menu")))
-    dropdown_menu = browser.find_element(By.CLASS_NAME, "dropdown-menu")
+    browser.find_element(By.CLASS_NAME, "dropdown-menu")
 # Переход "Предложения" в меню
     offers_link = WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.LINK_TEXT, "Предложения")))
     offers_link.click()
@@ -60,17 +61,12 @@ def test_go_to_offers_page(browser):
     name2_input.send_keys('Sheff')
     adres_input.send_keys('street')
     city_input.send_keys('SPb')
-    post_input.send_keys('1001')
+    post_input.send_keys('190000')
+# выбираем страну
+    country_select = Select(browser.find_element(By.ID, "id_country"))
+    country_select.select_by_visible_text("Russian Federation")
 
-#  Породолжить
+#  Продолжить
     browser.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
-#  Породолжить   
+#  Продолжить   
     browser.find_element(By.XPATH, "//a[contains(@href, 'ru/checkout/preview/')]").click()
-
-
-
-
-
-
-
-
