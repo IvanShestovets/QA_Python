@@ -13,7 +13,7 @@ def browser():
     driver.quit()
 
 
-# # Все 3 товара добавляются в корзину без проблем
+# Все 3 товара добавляются в корзину без проблем
 def test_shop(browser):
     browser.get('https://erikdark.github.io/QA_DIPLOM/')
     browser.find_element(By.XPATH, "//a[contains(@href, 'shop.html')]").click()
@@ -34,7 +34,7 @@ def test_shop(browser):
     submit_button.click()
 
     text = browser.find_element(By.ID, 'cartItems').text
-    assert 'Товар 1 - $100\nТовар 2 - $200\nТовар 1 - $350' == text
+    assert 'Товар 1 - $100\nТовар 2 - $200\nТовар 3 - $350' == text
 
     text2 = browser.find_element(By.ID,'cartTotal').text
     assert 'Общая стоимость: $650' == text2
@@ -71,19 +71,25 @@ def test_compare_product_prices(browser):
     product_button = browser.find_element(By.CSS_SELECTOR, ".products .product:nth-child(1) button.add-to-cart")
     product_button.click()
     browser.switch_to.alert.accept()
+
+    product_button = browser.find_element(By.CSS_SELECTOR, ".products .product:nth-child(2) button.add-to-cart")
+    product_button.click()
+    browser.switch_to.alert.accept()
+
+    product_button = browser.find_element(By.CSS_SELECTOR, ".products .product:nth-child(3) button.add-to-cart")
+    product_button.click()
+    browser.switch_to.alert.accept()
+
     submit_button = browser.find_element(By.ID, "cartButton")
     submit_button.click()
 
 
-#     product_elements = browser.find_elements(By.CSS_SELECTOR, ".product")
+    store_prices = browser.find_elements(By.CSS_SELECTOR, '.products .product p')
+    store_total = sum([int(re.search(r'\d+', p.text).group()) for p in store_prices])
 
-#     for product_element in product_elements:
-#         product_name = product_element.find_element(By.TAG_NAME, "h3").text
-#         product_price = float(product_element.find_element(By.CSS_SELECTOR, "p").text.split("$")[1])
+    # Находим общую стоимость товаров в корзине
+    cart_total = browser.find_element(By.ID, 'cartTotal').text
+    cart_price = int(re.search(r'\d+', cart_total).group())
 
-
-#         cart_items = browser.find_element(By.ID, "cartItems")
-#         cart_item = cart_items.find_element(By.XPATH, f".//div[contains(text(), '{product_name}')]")
-#         cart_item_price = float(cart_item.text.split("$")[1])
-
-#         assert product_price == cart_item_price
+    # Проверяем, что стоимость товаров в магазине и в корзине равны
+    assert store_total == cart_price, "Стоимость товаров в магазине и в корзине отличается"
